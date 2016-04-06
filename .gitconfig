@@ -1,0 +1,11 @@
+[user]
+	name = hfernandes
+	email = helder.fernandes@blum.com
+[http]
+	sslVerify = false
+	proxy = http://localhost:3128
+[https]
+	sslVerify = false
+	proxy = http://localhost:3128
+[alias]
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
