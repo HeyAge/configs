@@ -202,10 +202,17 @@ locate_pdf ()
 {
     locate -0 "$1" | xargs -0 pdfgrep -rom 1 "$2"; 
 }
-#export http_proxy=http://bau15043:H3m1s0f3@proxy.net.blum:8080
-#export https_proxy=http://bau15043:H3m1s0f3@proxy.net.blum:8080
 export http_proxy=http://localhost:3128
 export https_proxy=http://localhost:3128
 export cntlm=/usr/sbin
 source /usr/bin/virtualenvwrapper.sh
 export DISPLAY=:0.0
+# History
+# avoid duplicates..
+export HISTCONTROL=ignoredups:erasedups
+
+# append history entries..
+shopt -s histappend
+
+# After each command, save and reload history
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
