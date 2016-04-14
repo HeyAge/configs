@@ -102,17 +102,17 @@
 # Misc :)
 # alias less='less -r'                          # raw control characters
 # alias whence='type -a'                        # where, of a sort
- alias grep='grep --color'                     # show differences in colour
+alias grep='grep --color'                     # show differences in colour
 # alias egrep='egrep --color=auto'              # show differences in colour
 # alias fgrep='fgrep --color=auto'              # show differences in colour
 #
 # Some shortcuts for different directory listings
- alias ls='ls -hF --color=tty'                 # classify files in colour
- alias dir='ls --color=auto --format=vertical'
+alias ls='ls -hF --color=tty'                 # classify files in colour
+alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
- alias ll='ls -lah'                              # long list
+alias ll='ls -lah'                              # long list
 # alias la='ls -A'                              # all but . and ..
- alias l='ls -CF'                              #
+alias l='ls -CF'                              #
 #alias vimdiff="/cygdrive/c/Program\ Files\ \(x86\)/vim/vim74/gvim.exe -d"
 alias vimdiff="vim -d"
 
@@ -207,12 +207,28 @@ export https_proxy=http://localhost:3128
 export cntlm=/usr/sbin
 source /usr/bin/virtualenvwrapper.sh
 export DISPLAY=:0.0
-# History
+########################### History #######################################
 # avoid duplicates..
 export HISTCONTROL=ignoredups:erasedups
-
 # append history entries..
 shopt -s histappend
-
 # After each command, save and reload history
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+############################################################################
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+######################### Bash Shell PS1 ###################################
+# Add git branch if its present to PS1
+parse_git_branch() {
+ git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+#if [ "$color_prompt" = yes ]; then
+ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]$(parse_git_branch)\[\033[00m\]\$ '
+#else
+# PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\$ '
+#fi
+#unset color_prompt force_color_prompt
+#############################################################################
