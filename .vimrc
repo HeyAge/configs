@@ -36,6 +36,7 @@
 "    -> Spell checking
 "    -> Misc
 "    -> Helper functions
+"    -> vim-plug
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -60,8 +61,10 @@ let g:mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
+" Fast find
 nmap <leader>f :find
-
+" Fast close
+nmap <leader>q :q<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -71,9 +74,11 @@ set so=7
 
 " Turn on the WiLd menu
 set wildmenu
+" Show the found results in a list
+set wildmode=list:longest,full
 
 " Ignore compiled files
-set wildignore=*.o,*~,*.pyc
+set wildignore=*.o,*~,*.pyc,*.class
 
 "Always show current position
 set ruler
@@ -120,12 +125,31 @@ set tm=500
 " Show line numbers
 set number
 
-" Fix cursor in Cygwin to show a block instead of a blinking | in visual mode
+" Fix cursor in Cygwin to show a block instead of a blinking pipe symbol \"|\" in visual mode
 let &t_ti.="\e[1 q"
 let &t_SI.="\e[5 q"
 let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 
+" Netrw settings
+let g:netrw_liststyle=3         " thin (change to 3 for tree)
+let g:netrw_banner=0            " no banner
+let g:netrw_altv=1              " open files on right
+let g:netrw_preview=1           " open previews vertically
+let g:netrw_fastbrowse    = 2
+let g:netrw_keepdir       = 0
+let g:netrw_retmap        = 1
+let g:netrw_silent        = 1
+let g:netrw_special_syntax= 1
+
+"Remap key i to h
+"augroup netrw_mapping
+"    autocmd!
+"    autocmd filetype netrw call NetrwMapping()
+"augroup END
+"function! NetrwMapping()
+"    noremap <buffer> i h
+"endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -144,10 +168,23 @@ if has("gui_running")
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
+"set encoding=utf8
 
 " Use Unix as the standard file type
-set ffs=unix,dos,mac
+set ffs=unix
+" set ffs=unix,dos,mac
+
+" Working with unicode
+" http://vim.wikia.com/wiki/Working_with_Unicode
+"if has("multi_byte")
+"  if &termencoding == ""
+"    let &termencoding = &encoding
+"  endif
+"  set encoding=utf-8
+"  setglobal fileencoding=utf-8
+"  "setglobal bomb
+"  set fileencodings=ucs-bom,utf-8,latin1
+"endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -233,6 +270,10 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
+" saving and restoring sessions
+map <F2> :mksession! ~/vim_session <cr> " Quick write session with F2
+map <F3> :source ~/vim_session <cr>     " And load session with F3
+
 " Specify the behavior when switching between buffers 
 try
   set switchbuf=useopen,usetab,newtab
@@ -245,9 +286,40 @@ autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
      \   exe "normal! g`\"" |
      \ endif
-" Remember info about open buffers on close
-set viminfo^=%
 
+" append suffix to navigate files with gf
+set suffixesadd+=.java,.xml,.properties
+" set search path to current directory
+set path=$PWD/**
+
+""""""""""""""""""""""""""""""
+" => Buffer
+""""""""""""""""""""""""""""""
+
+" Remember info about open buffers on close
+" ":exec 'set viminfo=%,' . &viminfo
+ set viminfo^=%
+
+" This allows buffers to be hidden if you've modified a buffer.
+" This is almost a must if you wish to use buffers in this way.
+set hidden
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>bn :enew<cr>
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
 
 """"""""""""""""""""""""""""""
 " => Status line
@@ -313,9 +385,11 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 "
 " To go to the previous search results do:
 "   <leader>p
-"
+
+" What does this do?
 map <leader>cc :botright cope<cr>
-map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+" map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+map <leader>co ggVGy:enew<cr>:set syntax=qf<cr>pgg
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
@@ -343,7 +417,7 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 nnoremap K i<CR><Esc>
 
 " Quickly open a buffer for scripbble
-map <leader>q :e ~/buffer<cr>
+map <leader>e :e ~/buffer<cr>
 
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
@@ -419,6 +493,12 @@ call plug#begin('~/.vim/plugged')
 " https://github.com/tpope/vim-surround "
 Plug 'tpope/vim-surround', { 'branch': 'master' }
 
+" Fugitive vim " 
+" a Git wrapper
+" https://github.com/tpope/vim-fugitive "
+Plug 'tpope/vim-fugitive', { 'branch': 'master' }
+
+
 " auto-completion for quotes, parens, brackets, etc. " 
 " https://github.com/Raimondi/delimitMate "
 Plug 'Raimondi/delimitMate', { 'branch': 'master' }
@@ -428,6 +508,7 @@ au FileType vim,html,jsp,xml,md let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
 
 " Instant Markdown previews from VIm! "
 " type :MdP
+" Output to ~/tmp
 " https://github.com/swaroopch/vim-markdown-preview "
 Plug 'swaroopch/vim-markdown-preview', { 'branch': 'master' }
 
@@ -444,5 +525,43 @@ let g:UltiSnipsEditSplit="vertical"
 " https://github.com/honza/vim-snippets "
 Plug 'honza/vim-snippets', { 'branch': 'master' }
 
-" Add plugins to &runtimepath
+" lean & mean status/tabline for vim that's light as air "
+" https://github.com/vim-airline/vim-airline"
+" Plug 'vim-airline/vim-airline', { 'branch': 'master' }
+" A collection of themes for vim-airline
+" https://github.com/vim-airline/vim-airline-themes
+" Plug 'vim-airline/vim-airline-themes', { 'branch': 'master' }
+" Set scheme 
+" let g:airline_theme = 'sol'
+" Enable the list of buffers
+" let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+" let g:airline#extensions#tabline#fnamemod = ':t'
+
+" https://github.com/scrooloose/nerdtree "
+" Plug 'scrooloose/nerdtree', { 'branch': 'master' } " Add plugins to &runtimepath
+
+" A command-line fuzzy finder
+" https://github.com/junegunn/fzf "
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim', { 'branch': 'master' }
+
+"" Enable Powerline
+"set  rtp+=/usr/lib/python2.7/site-packages/powerline/bindings/vim/
+"" Always show statusline
+"set laststatus=2
+"set t_Co=256
+"set guifont=Hack:h10
+"" set guifont=Inconsolata\ for\ Powerline:h12
+"let g:Powerline_symbols = 'fancy'
+"set encoding=utf-8
+"set fillchars+=stl:\ ,stlnc:\
+"set termencoding=utf-8
+""Important for terminal vim to work in cygwin.
+"set term=xterm-256color
+
+" vim-searchindex: display number of search matches & index of a current match
+Plug 'google/vim-searchindex', { 'branch': 'master' }
+
+
 call plug#end()
