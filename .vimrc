@@ -515,6 +515,7 @@ endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-plug
+" PluginManager
 " https://github.com/junegunn/vim-plug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
@@ -596,5 +597,4 @@ Plug 'google/vim-searchindex', { 'branch': 'master' }
 " dispatch.vim asynchronous build and test dispatcher 
 Plug 'tpope/vim-dispatch', { 'branch': 'master' }
 
-" End Plug
 call plug#end()
