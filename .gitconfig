@@ -4,6 +4,7 @@
 [http]
 	sslVerify = false
 	proxy = http://localhost:3128
+    #Works without ntlm proxy, but password input is necessary.
 [https]
 	sslVerify = false
 	proxy = http://localhost:3128
