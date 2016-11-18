@@ -597,4 +597,5 @@ Plug 'google/vim-searchindex', { 'branch': 'master' }
 " dispatch.vim asynchronous build and test dispatcher 
 Plug 'tpope/vim-dispatch', { 'branch': 'master' }
 
+" End vim-plug
 call plug#end()
