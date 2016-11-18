@@ -5,8 +5,24 @@
 	sslVerify = false
 	proxy = http://localhost:3128
     #Works without ntlm proxy, but password input is necessary.
+    #proxy = BAULAN\\bau15043@proxy.net.blum:8080
 [https]
 	sslVerify = false
 	proxy = http://localhost:3128
 [alias]
+    dt = difftool
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    st = status -sb
+    co = checkout
+[diff]
+	tool = vimdiff
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[pull]
+	rebase = true
+[diff]
+    word-diff = true
