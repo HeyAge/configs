@@ -24,6 +24,7 @@
 "
 " Sections:
 "    -> General
+"    -> fugitive.vim git for vim
 "    -> VIM user interface
 "    -> Colors and Fonts
 "    -> Files and backups
@@ -65,6 +66,34 @@ nmap <leader>w :w!<cr>
 nmap <leader>f :find
 " Fast close
 nmap <leader>q :q<cr>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => fugitive.vim git for vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fugitive git bindings
+nnoremap <space>ga :Git add %:p<CR><CR>
+nnoremap <space>gs :Gstatus<CR>
+nnoremap <space>gc :Gcommit -v -q<CR>
+nnoremap <space>gt :Gcommit -v -q %:p<CR>
+nnoremap <space>gd :Gdiff<CR>
+nnoremap <space>ge :Gedit<CR>
+nnoremap <space>gr :Gread<CR>
+nnoremap <space>gw :Gwrite<CR><CR>
+nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <space>gg :Ggrep<Space>
+nnoremap <space>gm :Gmove<Space>
+nnoremap <space>gb :Git branch<Space>
+nnoremap <space>gco :Git checkout<Space>
+nnoremap <space>gps :! git push<CR>
+nnoremap <space>gp :! git pull<CR>
+" Dispatch doesn't seem to work on cygwing although the plugin is installed.
+" nnoremap <space>gps :Dispatch! git push<CR>
+" nnoremap <space>gp :Dispatch! git pull<CR>
+
+" same bindings for merging diffs as in normal mode
+xnoremap dp :diffput<cr>
+xnoremap do :diffget<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -251,11 +280,6 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-
-" Close all the buffers
-map <leader>ba :1,1000 bd!<cr>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -297,22 +321,28 @@ set path=$PWD/**
 """"""""""""""""""""""""""""""
 
 " Remember info about open buffers on close
-" ":exec 'set viminfo=%,' . &viminfo
- set viminfo^=%
+:exec 'set viminfo=%,' . &viminfo
+" set viminfo^=%
 
 " This allows buffers to be hidden if you've modified a buffer.
 " This is almost a must if you wish to use buffers in this way.
 set hidden
 
+" Close the current buffer
+map <leader>bd :Bclose<cr>
+
+" Close all the buffers
+map <leader>ba :1,1000 bd!<cr>
+
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
-nmap <leader>bn :enew<cr>
+nmap <leader>bc :enew<cr>
 
 " Move to the next buffer
-nmap <leader>l :bnext<CR>
+nmap <leader>bn :bnext<CR>
 
 " Move to the previous buffer
-nmap <leader>h :bprevious<CR>
+nmap <leader>bp :bprevious<CR>
 
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
@@ -563,5 +593,8 @@ Plug 'junegunn/fzf.vim', { 'branch': 'master' }
 " vim-searchindex: display number of search matches & index of a current match
 Plug 'google/vim-searchindex', { 'branch': 'master' }
 
+" dispatch.vim asynchronous build and test dispatcher 
+Plug 'tpope/vim-dispatch', { 'branch': 'master' }
 
+" End Plug
 call plug#end()
