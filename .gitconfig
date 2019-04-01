@@ -3,9 +3,10 @@
 	email = helder.fernandes@blum.com
 [http]
 	sslVerify = false
+	# Usage with CNTLM
 	proxy = http://localhost:3128
     #Works without ntlm proxy, but password input is necessary.
-    #proxy = BAULAN\\bau15043@proxy.net.blum:8080
+    #proxy = BAULAN\\user@proxy.net.company:8080
 [https]
 	sslVerify = false
 	proxy = http://localhost:3128
